@@ -1,0 +1,19 @@
+#!/usr/bin/zsh
+
+host="host.docker.internal"
+port="${DB_PORT:-5432}"
+user="${DB_USER:-postgres}"
+pass="${DB_PASSWORD:-password}"
+version="${PG_VERSION:-12.3}"
+
+docker run \
+  --rm \
+  -it \
+  --mount type=bind,source="$(pwd)",target="$(pwd)" \
+  postgres:${version} \
+  env PGHOST="${host}" \
+  env PGPORT="${port}" \
+  env PGUSER="${user}" \
+  env PGPASSWORD="${pass}" \
+  pg_dump "$@"
+
